@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Project Title</title>
+<meta charset="utf-8">
+<meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui" />
+<style> @-ms-viewport { width: device-width; } </style>
+<link rel="stylesheet" href="vendor/reset.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="multiple-scenes ">
+
+<div id="pano"></div>
+
+<div id="sceneList">
+  <ul class="scenes">
+    
+      <a href="javascript:void(0)" class="scene" data-id="0-1-">
+        <li class="text">1 </li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="1-2">
+        <li class="text">2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="2-21">
+        <li class="text">2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="3-211">
+        <li class="text">2.1.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="4-22-">
+        <li class="text">2.2 </li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="5-3">
+        <li class="text">3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="6-4">
+        <li class="text">4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="7-41">
+        <li class="text">4.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="8-5">
+        <li class="text">5</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="9-6">
+        <li class="text">6</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="10-51">
+        <li class="text">5.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="11-52">
+        <li class="text">5.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="12-53">
+        <li class="text">5.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="13-54">
+        <li class="text">5.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="14-511">
+        <li class="text">5.1.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="15-512">
+        <li class="text">5.1.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="16-513">
+        <li class="text">5.1.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="17-514">
+        <li class="text">5.1.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="18-515">
+        <li class="text">5.1.5</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="19-516">
+        <li class="text">5.1.6</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="20-521">
+        <li class="text">5.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="21-522">
+        <li class="text">5.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="22-523">
+        <li class="text">5.2.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="23-524">
+        <li class="text">5.2.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="24-5241">
+        <li class="text">5.2.4.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="25-5242">
+        <li class="text">5.2.4.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="26-5243">
+        <li class="text">5.2.4.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="27-52431">
+        <li class="text">5.2.4.3.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="28-52432">
+        <li class="text">5.2.4.3.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="29-5221">
+        <li class="text">5.2.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="30-5222">
+        <li class="text">5.2.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="31-52221">
+        <li class="text">5.2.2.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="32-52222">
+        <li class="text">5.2.2.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="33-5223">
+        <li class="text">5.2.2.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="34-5224">
+        <li class="text">5.2.2.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="35-5225">
+        <li class="text">5.2.2.5</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="36-5226">
+        <li class="text">5.2.2.6</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="37-52211">
+        <li class="text">5.2.2.1.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="38-52212">
+        <li class="text">5.2.2.1.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="39-522121">
+        <li class="text">5.2.2.1.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="40-522122">
+        <li class="text">5.2.2.1.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="41-52213">
+        <li class="text">5.2.2.1.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="42-522131">
+        <li class="text">5.2.2.1.3.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="43-522132">
+        <li class="text">5.2.2.1.3.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="44-52214">
+        <li class="text">5.2.2.1.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="45-52215">
+        <li class="text">5.2.2.1.5</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="46-52221">
+        <li class="text">5.2.2.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="47-52222">
+        <li class="text">5.2.2.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="48-5222">
+        <li class="text">5.2.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="49-52221">
+        <li class="text">5.2.2.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="50-52222">
+        <li class="text">5.2.2.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="51-522221">
+        <li class="text">5.2.2.2.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="52-52223">
+        <li class="text">5.2.2.2.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="53-5223">
+        <li class="text">5.2.2.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="54-52231">
+        <li class="text">5.2.2.3.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="55-52232">
+        <li class="text">5.2.2.3.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="56-5224">
+        <li class="text">5.2.2.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="57-52241">
+        <li class="text">5.2.2.4.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="58-522311">
+        <li class="text">5.2.2.3.1.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="59-522312">
+        <li class="text">5.2.2.3.1.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="60-522313">
+        <li class="text">5.2.2.3.1.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="61-522314">
+        <li class="text">5.2.2.3.1.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="62-522315">
+        <li class="text">5.2.2.3.1.5</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="63-5223141">
+        <li class="text">5.2.2.3.1.4.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="64-5223121">
+        <li class="text">5.2.2.3.1.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="65-522313">
+        <li class="text">5.2.2.3.1.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="66-5223131">
+        <li class="text">5.2.2.3.1.3.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="67-5223132">
+        <li class="text">5.2.2.3.1.3.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="68-5223122">
+        <li class="text">5.2.2.3.1.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="69-52231221">
+        <li class="text">5.2.2.3.1.2.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="70-522312211">
+        <li class="text">5.2.2.3.1.2.2.1.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="71-52231222">
+        <li class="text">5.2.2.3.1.2.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="72-5223123">
+        <li class="text">5.2.2.3.1.2.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="73-5223124">
+        <li class="text">5.2.2.3.1.2.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="74-5223125">
+        <li class="text">5.2.2.3.1.2.5</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="75-11">
+        <li class="text">1.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="76-12">
+        <li class="text">1.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="77-121">
+        <li class="text">1.2.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="78-122">
+        <li class="text">1.2.2</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="79-123">
+        <li class="text">1.2.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="80-124">
+        <li class="text">1.2.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="81-13">
+        <li class="text">1.3</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="82-14">
+        <li class="text">1.4</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="83-15">
+        <li class="text">1.5</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="84-151">
+        <li class="text">1..5.1</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="85-16">
+        <li class="text">1.6</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="86-17">
+        <li class="text">1.7</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="87-18">
+        <li class="text">1.8</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="88-19">
+        <li class="text">1.9</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="89-110">
+        <li class="text">1.10</li>
+      </a>
+    
+      <a href="javascript:void(0)" class="scene" data-id="90-111">
+        <li class="text">1.11</li>
+      </a>
+    
+  </ul>
+</div>
+
+<div id="titleBar">
+  <h1 class="sceneName"></h1>
+</div>
+
+<a href="javascript:void(0)" id="autorotateToggle">
+  <img class="icon off" src="img/play.png">
+  <img class="icon on" src="img/pause.png">
+</a>
+
+<a href="javascript:void(0)" id="fullscreenToggle">
+  <img class="icon off" src="img/fullscreen.png">
+  <img class="icon on" src="img/windowed.png">
+</a>
+
+<a href="javascript:void(0)" id="sceneListToggle">
+  <img class="icon off" src="img/expand.png">
+  <img class="icon on" src="img/collapse.png">
+</a>
+
+<a href="javascript:void(0)" id="viewUp" class="viewControlButton viewControlButton-1">
+  <img class="icon" src="img/up.png">
+</a>
+<a href="javascript:void(0)" id="viewDown" class="viewControlButton viewControlButton-2">
+  <img class="icon" src="img/down.png">
+</a>
+<a href="javascript:void(0)" id="viewLeft" class="viewControlButton viewControlButton-3">
+  <img class="icon" src="img/left.png">
+</a>
+<a href="javascript:void(0)" id="viewRight" class="viewControlButton viewControlButton-4">
+  <img class="icon" src="img/right.png">
+</a>
+<a href="javascript:void(0)" id="viewIn" class="viewControlButton viewControlButton-5">
+  <img class="icon" src="img/plus.png">
+</a>
+<a href="javascript:void(0)" id="viewOut" class="viewControlButton viewControlButton-6">
+  <img class="icon" src="img/minus.png">
+</a>
+
+<script src="vendor/screenfull.min.js" ></script>
+<script src="vendor/bowser.min.js" ></script>
+<script src="vendor/marzipano.js" ></script>
+
+<script src="data.js"></script>
+<script src="index.js"></script>
+
+</body>
+</html>
