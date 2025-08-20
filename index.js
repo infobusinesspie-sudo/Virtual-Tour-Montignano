@@ -78,7 +78,9 @@
       { cubeMapPreviewUrl: urlPrefix + "/" + data.id + "/preview.jpg" });
     var geometry = new Marzipano.CubeGeometry(data.levels);
 
-    var limiter = Marzipano.RectilinearView.limit.traditional(data.faceSize, 100*Math.PI/180, 120*Math.PI/180);
+    var limiter = Marzipano.RectilinearView.limit.traditional(
+      data.faceSize, 100*Math.PI/180, 120*Math.PI/180
+    );
     var view = new Marzipano.RectilinearView(data.initialViewParameters, limiter);
 
     var scene = viewer.createScene({
@@ -145,12 +147,12 @@
     showSceneList();
   }
 
-  // Set handler for scene switch.
+  // Set handler for scene switch from the list.
   scenes.forEach(function(scene) {
     var el = document.querySelector('#sceneList .scene[data-id="' + scene.data.id + '"]');
+    if (!el) return;
     el.addEventListener('click', function() {
       switchScene(scene);
-      // On mobile, hide scene list after selecting a scene.
       if (document.body.classList.contains('mobile')) {
         hideSceneList();
       }
@@ -182,6 +184,7 @@
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
   }
 
+  // --- PATCH: aggiorna anche l'URL quando cambi scena ---
   function switchScene(scene) {
     stopAutorotate();
     scene.view.setParameters(scene.data.initialViewParameters);
@@ -189,6 +192,12 @@
     startAutorotate();
     updateSceneName(scene);
     updateSceneList(scene);
+
+    // Aggiorna l'URL con il nome scena (copiabile)
+    try {
+      var alias = normalizeLabel(scene.data && scene.data.name) || normalizeLabel(scene.data && scene.data.id);
+      updateURLWithScene(alias);
+    } catch (e) { /* no-op */ }
   }
 
   function updateSceneName(scene) {
@@ -245,34 +254,26 @@
   }
 
   function createLinkHotspotElement(hotspot) {
-
-    // Create wrapper element to hold icon and tooltip.
     var wrapper = document.createElement('div');
     wrapper.classList.add('hotspot');
     wrapper.classList.add('link-hotspot');
 
-    // Create image element.
     var icon = document.createElement('img');
     icon.src = 'img/link.png';
     icon.classList.add('link-hotspot-icon');
 
-    // Set rotation transform.
     var transformProperties = [ '-ms-transform', '-webkit-transform', 'transform' ];
     for (var i = 0; i < transformProperties.length; i++) {
       var property = transformProperties[i];
       icon.style[property] = 'rotate(' + hotspot.rotation + 'rad)';
     }
 
-    // Add click event handler.
     wrapper.addEventListener('click', function() {
       switchScene(findSceneById(hotspot.target));
     });
 
-    // Prevent touch and scroll events from reaching the parent element.
-    // This prevents the view control logic from interfering with the hotspot.
     stopTouchAndScrollEventPropagation(wrapper);
 
-    // Create tooltip element.
     var tooltip = document.createElement('div');
     tooltip.classList.add('hotspot-tooltip');
     tooltip.classList.add('link-hotspot-tooltip');
@@ -285,17 +286,13 @@
   }
 
   function createInfoHotspotElement(hotspot) {
-
-    // Create wrapper element to hold icon and tooltip.
     var wrapper = document.createElement('div');
     wrapper.classList.add('hotspot');
     wrapper.classList.add('info-hotspot');
 
-    // Create hotspot/tooltip header.
     var header = document.createElement('div');
     header.classList.add('info-hotspot-header');
 
-    // Create image element.
     var iconWrapper = document.createElement('div');
     iconWrapper.classList.add('info-hotspot-icon-wrapper');
     var icon = document.createElement('img');
@@ -303,7 +300,6 @@
     icon.classList.add('info-hotspot-icon');
     iconWrapper.appendChild(icon);
 
-    // Create title element.
     var titleWrapper = document.createElement('div');
     titleWrapper.classList.add('info-hotspot-title-wrapper');
     var title = document.createElement('div');
@@ -311,7 +307,6 @@
     title.innerHTML = hotspot.title;
     titleWrapper.appendChild(title);
 
-    // Create close element.
     var closeWrapper = document.createElement('div');
     closeWrapper.classList.add('info-hotspot-close-wrapper');
     var closeIcon = document.createElement('img');
@@ -319,21 +314,17 @@
     closeIcon.classList.add('info-hotspot-close-icon');
     closeWrapper.appendChild(closeIcon);
 
-    // Construct header element.
     header.appendChild(iconWrapper);
     header.appendChild(titleWrapper);
     header.appendChild(closeWrapper);
 
-    // Create text element.
     var text = document.createElement('div');
     text.classList.add('info-hotspot-text');
     text.innerHTML = hotspot.text;
 
-    // Place header and text into wrapper element.
     wrapper.appendChild(header);
     wrapper.appendChild(text);
 
-    // Create a modal for the hotspot content to appear on mobile mode.
     var modal = document.createElement('div');
     modal.innerHTML = wrapper.innerHTML;
     modal.classList.add('info-hotspot-modal');
@@ -344,14 +335,9 @@
       modal.classList.toggle('visible');
     };
 
-    // Show content when hotspot is clicked.
     wrapper.querySelector('.info-hotspot-header').addEventListener('click', toggle);
-
-    // Hide content when close icon is clicked.
     modal.querySelector('.info-hotspot-close-wrapper').addEventListener('click', toggle);
 
-    // Prevent touch and scroll events from reaching the parent element.
-    // This prevents the view control logic from interfering with the hotspot.
     stopTouchAndScrollEventPropagation(wrapper);
 
     return wrapper;
@@ -359,8 +345,7 @@
 
   // Prevent touch and scroll events from reaching the parent element.
   function stopTouchAndScrollEventPropagation(element, eventList) {
-    var eventList = [ 'touchstart', 'touchmove', 'touchend', 'touchcancel',
-                      'wheel', 'mousewheel' ];
+    var eventList = [ 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'wheel', 'mousewheel' ];
     for (var i = 0; i < eventList.length; i++) {
       element.addEventListener(eventList[i], function(event) {
         event.stopPropagation();
@@ -386,7 +371,58 @@
     return null;
   }
 
-  // Display the initial scene.
-  switchScene(scenes[0]);
+  // --- Helpers per deep-link ---
+  function normalizeLabel(s) {
+    if (s == null) return '';
+    s = String(s).trim().replace(/\s+/g, ' ');
+    return s.replace(/,/g, '.'); // tollera "4,1" come "4.1"
+  }
+
+  function findSceneByQuery(q) {
+    if (q == null) return null;
+    var nq = normalizeLabel(q);
+    // 1) match per NOME visibile ("1", "4.1", "7")
+    for (var i = 0; i < scenes.length; i++) {
+      var name = normalizeLabel(scenes[i].data && scenes[i].data.name);
+      if (name === nq) return scenes[i];
+    }
+    // 2) fallback per ID tecnico ("7-41", ecc.)
+    for (var j = 0; j < scenes.length; j++) {
+      var id = normalizeLabel(scenes[j].data && scenes[j].data.id);
+      if (id === nq) return scenes[j];
+    }
+    return null;
+  }
+
+  function getSceneParamFromURL() {
+    var params = new URLSearchParams(window.location.search || '');
+    var q = params.get('scene');
+    if (!q && window.location.hash.indexOf('#scene=') === 0) {
+      q = decodeURIComponent(window.location.hash.substring(7));
+    }
+    return q;
+  }
+
+  function updateURLWithScene(alias) {
+    var u = new URL(window.location.href);
+    u.searchParams.set('scene', alias);
+    history.replaceState(null, '', u.toString());
+  }
+
+  // --- Avvio con supporto deep-link (?scene= / #scene=) ---
+  (function() {
+    var fromUrl = findSceneByQuery(getSceneParamFromURL());
+    switchScene(fromUrl || scenes[0]);
+  })();
+
+  // Supporta back/forward o cambi di hash
+  window.addEventListener('popstate', function() {
+    var target = findSceneByQuery(getSceneParamFromURL());
+    if (target) switchScene(target);
+  });
+  window.addEventListener('hashchange', function() {
+    var target = findSceneByQuery(getSceneParamFromURL());
+    if (target) switchScene(target);
+  });
 
 })();
