@@ -386,73 +386,7 @@
     return null;
   }
 
-
-// Normalizza il testo: toglie doppi spazi e trasforma 4,1 -> 4.1
-  function normalizeLabel(s) {
-    if (s == null) return '';
-    s = String(s).trim().replace(/\s+/g, ' ');
-    // a volte chi scrive usa la virgola al posto del punto
-    s = s.replace(/,/g, '.');
-    return s;
-  }
-
-  // Cerca per NOME scena (quello visibile: "1", "4.1", "7"), fallback per ID tecnico ("7-41", ecc.)
-  function findSceneByQuery(q) {
-    if (q == null) return null;
-    var nq = normalizeLabel(q);
-
-    // 1) match per nome
-    for (var i = 0; i < scenes.length; i++) {
-      var name = normalizeLabel(scenes[i].data && scenes[i].data.name);
-      if (name === nq) return scenes[i];
-    }
-
-    // 2) fallback per id tecnico
-    for (var j = 0; j < scenes.length; j++) {
-      var id = normalizeLabel(scenes[j].data && scenes[j].data.id);
-      if (id === nq) return scenes[j];
-    }
-
-    // 3) ultimo tentativo: match "largo" (es. nome senza spazi identico)
-    for (var k = 0; k < scenes.length; k++) {
-      var n2 = normalizeLabel(scenes[k].data && scenes[k].data.name).replace(/\s+/g, '');
-      if (n2 === nq.replace(/\s+/g, '')) return scenes[k];
-    }
-
-    return null;
-  }
-  
-  
   // Display the initial scene.
   switchScene(scenes[0]);
-
-
-  // Dopo il primo render, prova a saltare alla scena richiesta da ?scene= o #scene=
-  setTimeout(function () {
-    try {
-      var query = null;
-
-      // Estrai da querystring
-      var m = window.location.search.match(/[?&]scene=([^&]+)/);
-      if (m) query = decodeURIComponent(m[1]);
-
-      // Fallback da hash
-      if (!query && window.location.hash.indexOf('#scene=') === 0) {
-        query = decodeURIComponent(window.location.hash.substring(7));
-      }
-
-      var target = findSceneByQuery(query);
-      if (target) {
-        switchScene(target);
-      } else if (query) {
-        // debug non invasivo: vedi in console cosa hai chiesto e le scene disponibili
-        console.warn('[VT] Nessuna scena trovata per', query,
-          'Disponibili:', scenes.map(function(s){ return s.data && s.data.name; })
-        );
-      }
-    } catch (e) {
-      console.error('[VT] Errore deep-link:', e);
-    }
-  }, 0);
 
 })();
