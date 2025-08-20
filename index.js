@@ -182,7 +182,7 @@
     return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;');
   }
 
-  function switchScene(scene) {
+ function switchScene(scene) {
     stopAutorotate();
     scene.view.setParameters(scene.data.initialViewParameters);
     scene.scene.switchTo();
@@ -190,13 +190,15 @@
     updateSceneName(scene);
     updateSceneList(scene);
 
-    // --- Aggiorna l'URL con la scena corrente (copiabile) ---
+    // --- aggiorna l'URL con la scena corrente, così puoi copiare il link ---
     try {
-      var alias = (scene.data && scene.data.name ? String(scene.data.name).trim() : scene.data.id);
-      var url = new URL(location.href);
+      var alias = (scene.data && scene.data.name != null)
+        ? String(scene.data.name).replace(/\s+/g, ' ').trim()
+        : String(scene.data.id).trim();
+      var url = new URL(window.location.href);
       url.searchParams.set('scene', alias);
       history.replaceState(null, "", url.toString());
-    } catch (e) { /* no-op per browser vecchi */ }
+    } catch (e) { /* no-op */ }
   }
   
   function updateSceneName(scene) {
@@ -397,18 +399,22 @@
 
 
 
-  function findSceneByQuery(q) {
-    if (!q) return null;
-    q = String(q).trim();
-    // 1) cerca per nome (es. "4.1")
+function findSceneByQuery(q) {
+    if (q == null) return null;
+    // normalizza: stringa, trim, compatta spazi
+    q = String(q).replace(/\s+/g, ' ').trim(); // es. "4.1", "1", "3"
+
+    // 1) match per NOME (quello che vedi nella lista: "4.1", "1", "3")
     for (var i = 0; i < scenes.length; i++) {
       var s = scenes[i];
-      if ((s.data.name || '').trim() === q) return s;
+      var name = (s.data && s.data.name != null) ? String(s.data.name).replace(/\s+/g, ' ').trim() : '';
+      if (name === q) return s;
     }
-    // 2) fallback: cerca per id tecnico (es. "7-41")
+    // 2) fallback per ID tecnico (tipo "7-41")
     for (var j = 0; j < scenes.length; j++) {
       var s2 = scenes[j];
-      if ((s2.data.id || '').trim() === q) return s2;
+      var id = (s2.data && s2.data.id != null) ? String(s2.data.id).trim() : '';
+      if (id === q) return s2;
     }
     return null;
   }
@@ -419,18 +425,25 @@
 
   
 
-  // Display the initial scene (supporto deep-link: ?scene= oppure #scene=)
+// Display the initial scene (supporto deep-link: ?scene= oppure #scene=)
   (function startSceneFromURL() {
     var query = null;
-    try {
-      var params = new URLSearchParams(location.search);
-      query = params.get('scene');
-    } catch (e) { /* vecchi browser: ignora */ }
-    if (!query && location.hash.indexOf('#scene=') === 0) {
-      query = decodeURIComponent(location.hash.substring(7));
-    }
-    var target = findSceneByQuery(query);
-    if (target) { switchScene(target); }
-    else { switchScene(scenes[0]); }
 
-})();
+    // prova ?scene=...
+    try {
+      var params = new URLSearchParams(window.location.search);
+      query = params.get('scene');
+    } catch (e) { /* ok, vecchi browser */ }
+
+    // fallback: #scene=...
+    if (!query && window.location.hash.indexOf('#scene=') === 0) {
+      query = decodeURIComponent(window.location.hash.substring(7));
+    }
+
+    var target = findSceneByQuery(query);
+    if (target) {
+      switchScene(target);
+    } else {
+      switchScene(scenes[0]);
+    }
+  })();
