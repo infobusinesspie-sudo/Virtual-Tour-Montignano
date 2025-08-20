@@ -189,8 +189,16 @@
     startAutorotate();
     updateSceneName(scene);
     updateSceneList(scene);
-  }
 
+    // --- Aggiorna l'URL con la scena corrente (copiabile) ---
+    try {
+      var alias = (scene.data && scene.data.name ? String(scene.data.name).trim() : scene.data.id);
+      var url = new URL(location.href);
+      url.searchParams.set('scene', alias);
+      history.replaceState(null, "", url.toString());
+    } catch (e) { /* no-op per browser vecchi */ }
+  }
+  
   function updateSceneName(scene) {
     sceneNameElement.innerHTML = sanitize(scene.data.name);
   }
@@ -386,7 +394,43 @@
     return null;
   }
 
-  // Display the initial scene.
-  switchScene(scenes[0]);
+
+
+
+  function findSceneByQuery(q) {
+    if (!q) return null;
+    q = String(q).trim();
+    // 1) cerca per nome (es. "4.1")
+    for (var i = 0; i < scenes.length; i++) {
+      var s = scenes[i];
+      if ((s.data.name || '').trim() === q) return s;
+    }
+    // 2) fallback: cerca per id tecnico (es. "7-41")
+    for (var j = 0; j < scenes.length; j++) {
+      var s2 = scenes[j];
+      if ((s2.data.id || '').trim() === q) return s2;
+    }
+    return null;
+  }
+
+
+
+
+
+  
+
+  // Display the initial scene (supporto deep-link: ?scene= oppure #scene=)
+  (function startSceneFromURL() {
+    var query = null;
+    try {
+      var params = new URLSearchParams(location.search);
+      query = params.get('scene');
+    } catch (e) { /* vecchi browser: ignora */ }
+    if (!query && location.hash.indexOf('#scene=') === 0) {
+      query = decodeURIComponent(location.hash.substring(7));
+    }
+    var target = findSceneByQuery(query);
+    if (target) { switchScene(target); }
+    else { switchScene(scenes[0]); }
 
 })();
